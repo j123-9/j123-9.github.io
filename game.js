@@ -112,6 +112,9 @@
     state = 'over';
     setStatus('Game over');
     saveBestIfAvailable(score);
+    snake = [];
+    food = null;
+    render();
   }
 
   function saveBestIfAvailable(value) {

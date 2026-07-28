@@ -4,6 +4,7 @@
   --muted: #77736e;
   --paper: #f6f5f2;
   --card: #ffffff;
+  --surface-muted: #ebe9e4;
   --line: #dedcd7;
   --lime: #c8f169;
   --violet: #7063ff;
@@ -88,8 +89,11 @@ h2 { margin-bottom: 1rem; font-size: clamp(2.3rem, 5vw, 4.4rem); }
 .game-board { display: grid; grid-template-columns: repeat(20, 1fr); aspect-ratio: 1; width: 100%; border: 1px solid rgba(255, 255, 255, .12); background-image: linear-gradient(rgba(255, 255, 255, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .06) 1px, transparent 1px); background-size: 5% 5%; }
 .game-cell.snake { background: var(--lime); border-radius: 25%; box-shadow: 0 0 8px rgba(200, 241, 105, .5); }.game-cell.food { background: #ff8a65; border-radius: 50%; box-shadow: 0 0 10px rgba(255, 138, 101, .8); }
 .mobile-controls { display: flex; flex-direction: column; align-items: center; gap: .3rem; margin-top: .8rem; }.mobile-controls > div { display: flex; gap: .3rem; }.mobile-controls button { width: 2.5rem; height: 2.2rem; border: 1px solid rgba(255, 255, 255, .2); border-radius: .6rem; background: rgba(255, 255, 255, .08); color: white; cursor: pointer; }.mobile-controls button:hover { background: var(--violet); }
+.minesweeper-panel { display: grid; grid-template-columns: .9fr 1.1fr; gap: 2rem; align-items: center; margin-top: 1.5rem; padding: clamp(2rem, 6vw, 5rem); border: 1px solid var(--line); border-radius: 1.5rem; background: var(--card); }
+.minesweeper-copy > p:not(.eyebrow) { max-width: 430px; color: var(--muted); }.mine-actions { display: flex; gap: .5rem; margin-top: 1.5rem; flex-wrap: wrap; }.minesweeper-panel .button-ghost { border-color: var(--line); color: var(--ink); }.minesweeper-panel .button-ghost:hover { border-color: var(--violet); color: var(--violet); }
+.mine-shell { padding: 1rem; border: 1px solid var(--line); border-radius: 1.2rem; background: var(--paper); }.mine-stats { display: flex; justify-content: space-between; gap: .5rem; margin-bottom: .7rem; color: var(--muted); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }.mine-stats strong { color: var(--violet); }.mine-board { display: grid; grid-template-columns: repeat(20, 1fr); width: 100%; aspect-ratio: 1; border: 1px solid var(--line); overflow: hidden; }.mine-cell { min-width: 0; padding: 0; border: 0 solid var(--line); border-width: 0 1px 1px 0; background: var(--ink); color: var(--lime); font-size: clamp(.35rem, 1.4vw, .8rem); font-weight: 800; cursor: pointer; }.mine-cell:hover { background: var(--violet); }.mine-cell.revealed { background: var(--surface-muted); color: var(--ink); cursor: default; }.mine-cell.mine { background: #ff8a65; color: white; }
 
-.contact-section { display: flex; align-items: end; justify-content: space-between; gap: 2rem; padding-block: 8rem; }.contact-section h2 { margin: 0; }.contact-link { color: var(--violet); font-size: clamp(1rem, 2vw, 1.35rem); font-weight: 700; text-decoration: none; }.contact-link:hover { color: var(--ink); }
+.contact-section { display: flex; align-items: end; justify-content: space-between; gap: 2rem; padding-block: 8rem; }.contact-section h2 { margin: 0; }.contact-details { text-align: right; }.contact-link { color: var(--violet); font-size: clamp(1rem, 2vw, 1.35rem); font-weight: 700; text-decoration: none; }.contact-link:hover { color: var(--ink); }.contact-hours { margin: .35rem 0 0; color: var(--muted); font-size: .8rem; }
 .site-footer { width: min(100% - 3rem, 1100px); margin-inline: auto; padding-block: 1.5rem 2rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
 
 @media (max-width: 760px) {
@@ -104,10 +108,10 @@ h2 { margin-bottom: 1rem; font-size: clamp(2.3rem, 5vw, 4.4rem); }
   .section-block { padding-block: 4rem; }
   .section-heading { display: block; }
   .section-heading > p { text-align: left; }
-  .skill-grid, .games-panel { grid-template-columns: 1fr; }
+  .skill-grid, .games-panel, .minesweeper-panel { grid-template-columns: 1fr; }
   .games-panel { margin-top: 3rem; }
   .contact-section { display: block; padding-block: 5rem; }
-  .contact-link { display: inline-block; margin-top: 1.5rem; }
+  .contact-details { margin-top: 1.5rem; text-align: left; }.contact-link { display: inline-block; }
 }
 
 @media (max-width: 420px) {
