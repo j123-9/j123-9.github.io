@@ -10,6 +10,7 @@
   let state = 'ready';
   let timerId = null;
   let startedAt = 0;
+  let elapsedSeconds = 0;
   let revealedCount = 0;
 
   function setStatus(message) { statusElement.textContent = message; }
@@ -29,9 +30,10 @@
     if (timerId !== null) { clearInterval(timerId); timerId = null; }
     state = 'ready';
     startedAt = 0;
+    elapsedSeconds = 0;
     revealedCount = 0;
     document.querySelector('#mine-time').textContent = '0s';
-    board = Array.from({ length: size }, (_, y) => Array.from({ length: size }, (_, x) => ({ x, y, mine: false, adjacent: 0, revealed: false })));
+    board = Array.from({ length: size }, (_, y) => Array.from({ length: size }, (_, x) => ({ x, y, mine: false, adjacent: 0, revealed: false, flagged: false })));
     const positions = Array.from({ length: size * size }, (_, index) => index);
     for (let index = positions.length - 1; index > 0; index -= 1) {
       const swapIndex = Math.floor(Math.random() * (index + 1));
@@ -50,13 +52,15 @@
       button.type = 'button';
       button.className = 'mine-cell';
       button.setAttribute('role', 'gridcell');
-      button.setAttribute('aria-label', cell.revealed ? `공개된 칸 ${cell.adjacent}` : '닫힌 칸');
+      button.setAttribute('aria-label', cell.flagged ? '지뢰 표시된 칸' : cell.revealed ? `공개된 칸 ${cell.adjacent}` : '닫힌 칸');
+      if (cell.flagged && !cell.revealed) { button.classList.add('flagged'); button.textContent = '⚑'; }
       if (cell.revealed || (revealMines && cell.mine)) {
         button.classList.add('revealed');
         if (cell.mine) { button.classList.add('mine'); button.textContent = '✦'; }
         else if (cell.adjacent > 0) button.textContent = String(cell.adjacent);
       }
       button.addEventListener('click', () => reveal(cell.x, cell.y));
+      button.addEventListener('contextmenu', (event) => { event.preventDefault(); toggleFlag(cell.x, cell.y); });
       boardElement.append(button);
     }));
   }
@@ -66,8 +70,9 @@
     if (state === 'success' || state === 'failed') reset();
     state = 'running';
     startedAt = Date.now();
+    elapsedSeconds = 0;
     setStatus('Running');
-    timerId = setInterval(() => { document.querySelector('#mine-time').textContent = `${Math.floor((Date.now() - startedAt) / 1000)}s`; }, 1000);
+    timerId = setInterval(() => { elapsedSeconds += 1; timeElement.textContent = `${elapsedSeconds}s`; }, 1000);
   }
 
   function floodReveal(startCell) {
@@ -92,10 +97,19 @@
     if (state === 'ready') start();
     if (state !== 'running') return;
     const cell = board[y][x];
-    if (cell.revealed) return;
+    if (cell.revealed || cell.flagged) return;
     if (cell.mine) return finish(false);
     floodReveal(cell);
     if (revealedCount >= size * size - mineCount) finish(true);
+    render();
+  }
+
+  function toggleFlag(x, y) {
+    if (state === 'ready') start();
+    if (state !== 'running') return;
+    const cell = board[y][x];
+    if (cell.revealed) return;
+    cell.flagged = !cell.flagged;
     render();
   }
 
